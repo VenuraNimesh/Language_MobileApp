@@ -4,15 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="iit.com.coursework2.MainActivity">
+    tools:context="iit.com.coursework2.view.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/addPhrase"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/addPhrase"
+        app:layout_constraintBottom_toTopOf="@+id/displayPhrase"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.388"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/displayPhrase"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginBottom="320dp"
+        android:text="@string/displayPhrase"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="0dp" />
 
+    <Button
+        android:id="@+id/editPhrase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/editPhrase"
+        app:layout_constraintBottom_toTopOf="@+id/languageSub"
+        app:layout_constraintTop_toBottomOf="@+id/displayPhrase"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/languageSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/languageSub"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="336dp" />
+
+    <Button
+        android:id="@+id/translate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/translate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/languageSub"
+        app:layout_constraintVertical_bias="0.462"
+        tools:layout_editor_absoluteX="16dp" />
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item>
+        <inset android:insetLeft="-1dp" android:insetRight="-1dp">
+            <shape android:shape="rectangle">
+                <stroke android:width="2dp"
+                    android:color="#cccccc" />
+                <solid android:color="#f0f0f0" />
+
+                <corners
+                    android:bottomLeftRadius="70dp"
+                    android:bottomRightRadius="70dp"
+                    android:topLeftRadius="70dp"
+                    android:topRightRadius="70dp"/>
+            </shape>
+        </inset>
+    </item>
+
+</selector>

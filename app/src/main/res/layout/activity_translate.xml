@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="100">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            >
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:choiceMode="singleChoice" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/spinner">
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="230dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+
+                android:spinnerMode="dropdown" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:src="@drawable/dropdown" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp">
+
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+
+                android:layout_marginBottom="10dp"
+                android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:text="@string/save" />
+        </LinearLayout>
+
+        <!--<RelativeLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true">-->
+
+
+        <!--</RelativeLayout>-->
+        <TextView
+            android:id ="@+id/translatedWord"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="jhdsghd"
+            android:textAlignment="center"
+            android:textSize="15pt" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:src="@drawable/speaker" />
+
+
+    </LinearLayout>
+</ScrollView>
+
+    <!--android:prompt="Select the Language"-->
