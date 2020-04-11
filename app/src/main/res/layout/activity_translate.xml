@@ -10,7 +10,8 @@
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:weightSum="100">
+        android:weightSum="100"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             >
 
             <ListView
-                android:id="@+id/listView"
+                android:id="@+id/phrasesListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:choiceMode="singleChoice" />
@@ -61,44 +62,35 @@
             android:layout_marginTop="15dp">
 
             <Button
-                android:id="@+id/edit"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-
-                android:layout_marginBottom="10dp"
-                android:text="@string/edit" />
+                android:id="@+id/translate"
+                android:layout_width="120dp"
+                android:layout_height="55dp"
+                android:text="@string/translate" />
 
             <Button
-                android:id="@+id/save"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:layout_centerVertical="true"
-                android:text="@string/save" />
+                android:id="@+id/translateAll"
+                android:layout_width="120dp"
+                android:layout_height="55dp"
+                android:text="@string/translateAll" />
         </LinearLayout>
 
-        <!--<RelativeLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true">-->
 
-
-        <!--</RelativeLayout>-->
         <TextView
             android:id ="@+id/translatedWord"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="jhdsghd"
+            android:text="Word Appear here"
             android:textAlignment="center"
             android:textSize="15pt" />
 
-        <ImageView
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id= "@+id/speakerButton"
+            android:layout_width="50dp"
+            android:scaleType="fitXY"
             android:layout_height="50dp"
             android:src="@drawable/speaker" />
-
 
     </LinearLayout>
 </ScrollView>
 
-    <!--android:prompt="Select the Language"-->
+    <!--android:prompt="Select LanguageModeluage"-->

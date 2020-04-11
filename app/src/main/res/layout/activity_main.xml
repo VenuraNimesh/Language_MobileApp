@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="iit.com.coursework2.view.MainActivity">
+    tools:context="iit.com.coursework2.view.MainActivity"
+    android:background="@drawable/gradientcolor">
 
     <Button
         android:id="@+id/addPhrase"
@@ -36,7 +37,7 @@
         android:text="@string/editPhrase"
         app:layout_constraintBottom_toTopOf="@+id/languageSub"
         app:layout_constraintTop_toBottomOf="@+id/displayPhrase"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.83"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
@@ -45,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/languageSub"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="336dp" />
+        tools:layout_editor_absoluteY="364dp" />
 
     <Button
         android:id="@+id/translate"

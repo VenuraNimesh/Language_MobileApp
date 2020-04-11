@@ -7,5 +7,11 @@
     <string name="translate">Translate</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
+    <string name="translateAll">Translate All</string>
     <string name="update">Update</string>
+    <string name="translateApiKey">IxPhl1QKewcp3r1uvdys9D_Bgdl1SuNYI6Mzojry_4TL</string>
+    <string name="translateUrl">https://api.us-south.language-translator.watson.cloud.ibm.com/instances/d5abda90-19d0-4fd6-b9ed-75f33c61d881</string>
+    <string name="speechApiKey">poaq5WUZRYXg0WctXbtMGIfs7ALJJ6Gc4ycBLTDh56pz</string>
+    <string name="speechUrl">https://api.eu-gb.text-to-speech.watson.cloud.ibm.com/instances/622b291e-551d-49ea-be17-d687e83d9ff4</string>
+
 </resources>

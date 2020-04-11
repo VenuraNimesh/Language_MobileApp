@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import iit.com.coursework2.R;
 import iit.com.coursework2.controller.PhraseController;
+import iit.com.coursework2.model.PhraseModel;
 
 public class EditPhraseActivity extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class EditPhraseActivity extends AppCompatActivity {
     String selectedValue;
     int phraseID;
     PhraseController phraseController = new PhraseController(this);
+    ArrayList<PhraseModel> phraseObjArray = new ArrayList<>();
     ArrayAdapter arrayAdapter;
 
 
@@ -54,9 +56,14 @@ public class EditPhraseActivity extends AppCompatActivity {
         Cursor data = phraseController.getData();
         ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
-            //get the value from database in col 1
-            //Add it to the list
-            listData.add(data.getString(1));
+            Integer id = data.getInt(0);
+            String phrase = data.getString(1);
+
+            PhraseModel phraseModel = new PhraseModel(id, phrase);
+            phraseObjArray.add(phraseModel);
+
+            //Add phrases to the list
+            listData.add(phrase);
         }
         Collections.sort(listData);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, listData);
@@ -86,10 +93,15 @@ public class EditPhraseActivity extends AppCompatActivity {
                 if (selectedValue != null) {
                     editText.setText(selectedValue);
 
-                    Cursor data = phraseController.getPhraseID(selectedValue);
-                    while (data.moveToNext()) {
-                        phraseID = data.getInt(0);
+                    for(int i=0; i< phraseObjArray.size(); i++){
+                        if(phraseObjArray.get(i).getPhrase().equals(selectedValue)){
+                            phraseID = phraseObjArray.get(i).getID();
+                        }
                     }
+//                    Cursor data = phraseController.getPhraseID(selectedValue);
+//                    while (data.moveToNext()) {
+//                        phraseID = data.getInt(0);
+//                    }
                 }
             }
         });
@@ -108,7 +120,7 @@ public class EditPhraseActivity extends AppCompatActivity {
 
                     if (isUpdated) {
                         Toast.makeText(EditPhraseActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
-                        arrayAdapter.notifyDataSetChanged();
+                        displayWithRadioButtons();
                     } else {
                         Toast.makeText(EditPhraseActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }

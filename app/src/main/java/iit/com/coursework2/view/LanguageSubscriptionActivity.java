@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,17 +27,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 
 import iit.com.coursework2.R;
 import iit.com.coursework2.controller.LanguageController;
-import iit.com.coursework2.model.Language;
+import iit.com.coursework2.model.LanguageModel;
 
 public class LanguageSubscriptionActivity extends AppCompatActivity {
     private static LanguageTranslator languageTranslator;
     ListView listViewLan;
     Button btnUpdate;
     LanguageController languageController = new LanguageController(this);
+    ArrayList<String> selectedLanguagesList = new ArrayList<>();
+    ArrayList<LanguageModel> languageObjArray = new ArrayList<>();
+    HashMap<String, Integer> subscribedHashMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +58,9 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
 
             //Check for internet connection
             if (checkInternetConnection()) {
-                IamAuthenticator authenticator = new IamAuthenticator("IxPhl1QKewcp3r1uvdys9D_Bgdl1SuNYI6Mzojry_4TL");
+                IamAuthenticator authenticator = new IamAuthenticator(getString(R.string.translateApiKey));
                 languageTranslator = new LanguageTranslator("2018-05-01", authenticator);
-                languageTranslator.setServiceUrl("https://api.us-south.language-translator.watson.cloud.ibm.com/instances/d5abda90-19d0-4fd6-b9ed-75f33c61d881");
+                languageTranslator.setServiceUrl(getString(R.string.translateUrl));
 
                 new GetLanguages().execute();
             } else {
@@ -63,7 +69,9 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
         }
 
         listViewWithCheckBoxes();
+        onClickUpdate();
     }
+
 
     private boolean checkInternetConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -89,7 +97,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
         }
 
         private void addLanguagesToDB(String allLanguagesJson) {
-            Log.d("cba", allLanguagesJson);
 
             try {
                 JSONObject jsonObject = new JSONObject(allLanguagesJson);
@@ -103,7 +110,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                     String name = lang.getString("name");
                     Integer subscribed = 0;
 
-                    Language language = new Language(code, name, subscribed);
+                    LanguageModel language = new LanguageModel(code, name, subscribed);
                     languageController.addAllLanguages(language);
                 }
 
@@ -117,18 +124,91 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
     private void listViewWithCheckBoxes() {
         Cursor data = languageController.getAllLanguages();
         ArrayList<String> listLanguages = new ArrayList<>();
+        ArrayList<Integer> checkedList = new ArrayList<>();
         while (data.moveToNext()) {
-            //get the value from database in col 2
-            //Add it to the list
-            listLanguages.add(data.getString(2));
+            String id = data.getString(0);
+            String langCode = data.getString(1);
+            String langName = data.getString(2);
+            Integer subscribed = data.getInt(3);
+
+            LanguageModel languageModel = new LanguageModel(id, langCode, langName, subscribed);
+            languageObjArray.add(languageModel);
+
+            listLanguages.add(langName);
+            int checkedValue = data.getInt(3);
+
+            if (checkedValue == 1) {
+                checkedList.add(data.getInt(0));
+            }
         }
-        Collections.sort(listLanguages);
+
+        //Collections.sort(listLanguages);
+
 
         ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, listLanguages);
 
         listViewLan.setAdapter(arrayAdapter);
+        for (Integer position : checkedList) {
+            listViewLan.setItemChecked(position - 1, true);
+
+        }
+
+        listViewLan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long lanId) {
+                CheckedTextView item = (CheckedTextView) view;
+                String selectedLanguage = (String) listViewLan.getItemAtPosition(position);
+
+//                if (selectedLanguagesList.contains(selectedLanguage)) {
+//                    selectedLanguagesList.remove(selectedLanguage);
+//                } else
+//                    selectedLanguagesList.add(selectedLanguage);
+                for (int i = 0; i < languageObjArray.size(); i++) {
+                    if (languageObjArray.get(i).getLang_name().equals(selectedLanguage)) {
+
+                        if(item.isChecked()){
+                            languageObjArray.get(i).setSubscribed(1);
+                            subscribedHashMap.put(languageObjArray.get(i).getID(), 1);
+                        }
+                        else {
+                            languageObjArray.get(i).setSubscribed(1);
+                            subscribedHashMap.put(languageObjArray.get(i).getID(), 0);
+                        }
+
+                    }
+                }
+
+            }
+        });
 
     }
 
+    private void onClickUpdate() {
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (subscribedHashMap != null) {
+                 boolean updated =  languageController.updateSubscription(subscribedHashMap);
+                 if(updated) {
+                     listViewWithCheckBoxes();
+                     Toast.makeText(LanguageSubscriptionActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                 }
+                 else
+                     Toast.makeText(LanguageSubscriptionActivity.this, "Something went wrong,Try again", Toast.LENGTH_SHORT).show();
+
+//                    for (String language : selectedLanguagesList) {
+//                        Cursor data = languageController.getLanguageID(language);
+//                        while (data.moveToNext()) {
+//                            String languageID = String.valueOf(data.getInt(0));
+//
+//                        }
+//                    }
+
+                }
+                else
+                    Toast.makeText(LanguageSubscriptionActivity.this, "Nothing to Update", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }

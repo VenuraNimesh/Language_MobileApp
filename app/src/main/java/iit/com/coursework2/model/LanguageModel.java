@@ -1,22 +1,31 @@
 package iit.com.coursework2.model;
 
-public class Language {
+public class LanguageModel {
     private String ID;
     private String lang_code;
     private String lang_name;
     private Integer subscribed;
+    private boolean modified;
 
-    public Language(String ID, String lang_code, String lang_name, Integer subscribed) {
+    public LanguageModel(String ID, String lang_code, String lang_name, Integer subscribed) {
         this.ID = ID;
         this.lang_code = lang_code;
         this.lang_name = lang_name;
         this.subscribed = subscribed;
     }
 
-    public Language(String lang_code, String lang_name, Integer subscribed) {
+    public LanguageModel(String lang_code, String lang_name, Integer subscribed) {
         this.lang_code = lang_code;
         this.lang_name = lang_name;
         this.subscribed = subscribed;
+    }
+
+    public LanguageModel(String ID, String lang_code, String lang_name, Integer subscribed, boolean modified) {
+        this.ID = ID;
+        this.lang_code = lang_code;
+        this.lang_name = lang_name;
+        this.subscribed = subscribed;
+        this.modified = modified;
     }
 
     public String getID() {
@@ -50,5 +59,7 @@ public class Language {
     public void setSubscribed(Integer subscribed) {
         this.subscribed = subscribed;
     }
+
+
 }
 

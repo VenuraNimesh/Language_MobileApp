@@ -47,10 +47,9 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
             listData.add(data.getString(1));
         }
         Collections.sort(listData);
-        ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        ArrayAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
 
         listView.setAdapter(listAdapter);
-
 
     }
 }
