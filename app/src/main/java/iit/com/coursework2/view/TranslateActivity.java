@@ -1,5 +1,6 @@
 package iit.com.coursework2.view;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -10,12 +11,14 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -42,11 +45,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import iit.com.coursework2.R;
 import iit.com.coursework2.controller.LanguageController;
 import iit.com.coursework2.controller.PhraseController;
+import iit.com.coursework2.model.DictionaryModel;
 import iit.com.coursework2.model.LanguageModel;
+import iit.com.coursework2.model.PhraseModel;
 
 
 public class TranslateActivity extends AppCompatActivity {
@@ -54,6 +61,7 @@ public class TranslateActivity extends AppCompatActivity {
     PhraseController phraseController = new PhraseController(this);
     ArrayList<LanguageModel> languageObjArray = new ArrayList<>();
     private LanguageTranslator translationService;
+    ArrayList<PhraseModel> phraseObjArray = new ArrayList<>();
 
     private StreamPlayer player = new StreamPlayer();
     private TextToSpeech textService;
@@ -61,10 +69,12 @@ public class TranslateActivity extends AppCompatActivity {
     TextView translatedWord;
     ListView phrasesListView;
     Spinner dropDown;
-    Button btnTanslate, btnTranslateAll;
-    ImageButton btnSpeaker;
+    Button btnTranslate, btnTranslateAll;
+    ImageView btnSpeaker;
     String selectedWord;
     String selectedLangCode;
+    String selectedLangID;
+    String selectedLangName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,25 +84,33 @@ public class TranslateActivity extends AppCompatActivity {
         phrasesListView = (ListView) findViewById(R.id.phrasesListView);
         translatedWord = (TextView) findViewById(R.id.translatedWord);
         dropDown = (Spinner) findViewById(R.id.spinner);
-        btnTanslate = (Button) findViewById(R.id.translate);
+        btnTranslate = (Button) findViewById(R.id.translate);
         btnTranslateAll = (Button) findViewById(R.id.translateAll);
-        btnSpeaker = (ImageButton) findViewById(R.id.speakerButton);
+        btnSpeaker = (ImageView) findViewById(R.id.speakerButton);
 
         displayPhrases();
         subscribedLanguages();
         onClickTranslate();
-        onClickPronounce();
-
+        onClickTranslateAll();
+        //Log.d("translatedWord", translatedWord.getText().toString());
+        if (!translatedWord.getText().toString().equals(" ")) {
+            onClickPronounce();
+        } else {
+            Toast.makeText(TranslateActivity.this, "Translate a word or phrase first", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void displayPhrases() {
         Cursor data = phraseController.getData();
         ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
+            Integer id = data.getInt(0);
+            String phrase = data.getString(1);
 
-            //get the value from database in col 1
-            //Add it to the list
-            listData.add(data.getString(1));
+            PhraseModel phraseModel = new PhraseModel(id, phrase);
+            phraseObjArray.add(phraseModel);
+
+            listData.add(phrase);
         }
         Collections.sort(listData);
         ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
@@ -104,6 +122,16 @@ public class TranslateActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arrayAdapter, View view, int position, long itemId) {
 
                 selectedWord = (String) phrasesListView.getItemAtPosition(position);
+
+               // phrasesListView.getChildAt(position).setBackgroundColor(Color.TRANSPARENT);
+
+//                CheckedTextView checkedTextView;
+//                phrasesListView.invalidateViews();
+//                checkedTextView = (CheckedTextView) view;
+//                if (checkedTextView != null) {
+//                    checkedTextView.setTextColor(Color.BLUE);
+//                }
+
 
             }
         });
@@ -138,9 +166,11 @@ public class TranslateActivity extends AppCompatActivity {
                         String selectedLanguage = adapterView.getItemAtPosition(position).toString();
 
                         for (int i = 0; i < languageObjArray.size(); i++) {
-                            if (languageObjArray.get(i).getLang_name() == selectedLanguage) {
+                            if (languageObjArray.get(i).getLang_name().equals(selectedLanguage)) {
                                 selectedLangCode = languageObjArray.get(i).getLang_code();
-                                Log.d("selectedLangCode", selectedLangCode);
+                                selectedLangID = languageObjArray.get(i).getID();
+                                selectedLangName = languageObjArray.get(i).getLang_name();
+
                             }
                         }
                     }
@@ -157,7 +187,7 @@ public class TranslateActivity extends AppCompatActivity {
     }
 
     private void onClickTranslate() {
-        btnTanslate.setOnClickListener(new View.OnClickListener() {
+        btnTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Check for internet connection
@@ -175,7 +205,35 @@ public class TranslateActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void onClickTranslateAll() {
+        btnTranslateAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Check for internet connection
+                if (checkInternetConnection()) {
+                    if (selectedLangCode != null && phraseObjArray.size() != 0) {
+
+                        //Get list of phrases from the object
+                        ArrayList<String> phrasesList = new ArrayList<>();
+                        for (int i = 0; i < phraseObjArray.size(); i++) {
+                            phrasesList.add(phraseObjArray.get(i).getPhrase());
+                        }
+
+                        translationService = initLanguageTranslatorService();
+
+                        new TranslateAllTask().execute(phrasesList);
+
+                    } else {
+                        Toast.makeText(TranslateActivity.this, "Select a Language to Translate", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(TranslateActivity.this, "Check your Internet Connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private boolean checkInternetConnection() {
@@ -194,9 +252,17 @@ public class TranslateActivity extends AppCompatActivity {
     }
 
     private class TranslationTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog dialog = new ProgressDialog(TranslateActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
+
         @Override
         protected String doInBackground(String... params) {
-            String firstTranslation = null;
+
             try {
                 TranslateOptions translateOptions = new TranslateOptions.Builder()
                         .addText(params[0])
@@ -204,8 +270,8 @@ public class TranslateActivity extends AppCompatActivity {
                         .target(params[1])
                         .build();
                 TranslationResult result = translationService.translate(translateOptions).execute().getResult();
-                firstTranslation = result.getTranslations().get(0).getTranslation();
-                return firstTranslation;
+                String translatedWord = result.getTranslations().get(0).getTranslation();
+                return translatedWord;
 
             } catch (ServiceResponseException e) {
                 Log.d("errorrr", e.getStatusCode() + e.getMessage());
@@ -220,16 +286,89 @@ public class TranslateActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
             if (result.equals("404")) {
                 Toast.makeText(TranslateActivity.this, "Selected Language is Currently Unavailable", Toast.LENGTH_SHORT).show();
-            } else
+            } else {
+                translatedWord.setVisibility(View.VISIBLE);
                 translatedWord.setText(result);
+            }
+        }
+    }
+
+    private class TranslateAllTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
+        private ProgressDialog dialog = new ProgressDialog(TranslateActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
+
+        @Override
+        protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+            ArrayList<String> translatedList = new ArrayList<>();
+
+            try {
+                TranslateOptions translateOptions = new TranslateOptions.Builder()
+                        .text(params[0])
+                        .source(Language.ENGLISH)
+                        .target(selectedLangCode)
+                        .build();
+                TranslationResult result = translationService.translate(translateOptions).execute().getResult();
+
+                for (int i = 0; i < result.getTranslations().size(); i++) {
+                    String translatedPhrase = result.getTranslations().get(i).getTranslation();
+                    Log.d("translatedPhrase", translatedPhrase);
+                    translatedList.add(translatedPhrase);
+                }
+
+            } catch (ServiceResponseException e) {
+                Log.d("errorrr", e.getStatusCode() + e.getMessage());
+                //return String.valueOf(e.getStatusCode());
+            } catch (Resources.NotFoundException e) {
+                Log.d("errorr", e.getMessage());
+                //return String.valueOf(e);
+            }
+            return translatedList;
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> resultList) {
+            super.onPostExecute(resultList);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            translatedListToDB(resultList);
+
+        }
+    }
+
+    private void translatedListToDB(ArrayList<String> translatedList) {
+        if (phraseObjArray.size() != 0 && selectedLangID != null) {
+            String langID = selectedLangID;
+            String langName = selectedLangName;
+
+            for (int i = 0; i < phraseObjArray.size(); i++) {
+                String phraseID = String.valueOf(phraseObjArray.get(i).getID());
+                String phraseName = phraseObjArray.get(i).getPhrase();
+                String translatedWord = translatedList.get(i);
+
+                DictionaryModel dictionaryModel = new DictionaryModel(langID, phraseID, phraseName, translatedWord, langName);
+
+                languageController.translateAllPhrases(dictionaryModel);
+            }
 
         }
     }
 
     private void onClickPronounce() {
+
         btnSpeaker.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 //Check for internet connection
@@ -238,9 +377,10 @@ public class TranslateActivity extends AppCompatActivity {
 
                     if (translatedWord.getText() != null) {
                         new SynthesisTask().execute(String.valueOf(translatedWord.getText().toString()));
-                    } else
+                    } else {
+                        btnSpeaker.setEnabled(false);
                         Toast.makeText(TranslateActivity.this, "Please Translate Again", Toast.LENGTH_SHORT).show();
-
+                    }
 
                 } else {
                     Toast.makeText(TranslateActivity.this, "Check your Internet Connection", Toast.LENGTH_SHORT).show();
@@ -248,6 +388,7 @@ public class TranslateActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private TextToSpeech initTextToSpeechService() {
@@ -258,6 +399,13 @@ public class TranslateActivity extends AppCompatActivity {
     }
 
     private class SynthesisTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog dialog = new ProgressDialog(TranslateActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -269,7 +417,9 @@ public class TranslateActivity extends AppCompatActivity {
                         .build();
 
                 player.playStream(textService.synthesize(synthesizeOptions).execute().getResult());
-
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
             } catch (Resources.NotFoundException e) {
                 Log.d("errorr", e.getMessage());
             } catch (ServiceResponseException e) {
@@ -277,6 +427,7 @@ public class TranslateActivity extends AppCompatActivity {
             }
             return "Done";
         }
+
     }
 
 }

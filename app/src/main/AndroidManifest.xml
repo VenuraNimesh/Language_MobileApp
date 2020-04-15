@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".view.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,13 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.MainActivity" />
         <activity android:name=".view.AddPhrasesActivity" />
         <activity android:name=".view.DisplayPhrasesActivity" />
         <activity android:name=".view.EditPhraseActivity" />
         <activity android:name=".view.LanguageSubscriptionActivity" />
-
-        <activity android:name=".view.TranslateActivity"/>
+        <activity android:name=".view.TranslateActivity" />
+        <activity android:name=".view.DictionaryActivity"></activity>
     </application>
 
 </manifest>

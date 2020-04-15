@@ -20,6 +20,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     protected static final String COLT3 = "lang_name";
     protected static final String COLT4 = "subscribed";
 
+    protected static final String TABLE_DICTIONARY = "language_dictionary";
+    protected static final String COLD1 = "lang_id";
+    protected static final String COLD2 = "phrase_id";
+    protected static final String COLD3 = "phrase_name";
+    protected static final String COLD4 = "translated_phrase";
+    protected static final String COLD5 = "lang_name";
+
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,8 +40,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                                                                 COLT3 + " TEXT," +
                                                                                 COLT4 + " INTEGER)";
 
+        String Create_Table_Dictionary = "CREATE TABLE " + TABLE_DICTIONARY +  " ("+ COLD1 + " INTEGER NOT NULL REFERENCES language_translate(ID),"  +
+                COLD2 + " INTEGER NOT NULL REFERENCES language_phrases(ID),"  +
+                COLD3 + " TEXT," +
+                COLD4 + " TEXT," +
+                COLD5 + " TEXT, PRIMARY KEY ("+COLD1 + "," +COLD2 +"))";
+
         db.execSQL(Create_Table_Phrases);
         db.execSQL(Create_Table_Translate);
+        db.execSQL(Create_Table_Dictionary);
     }
 
     @Override

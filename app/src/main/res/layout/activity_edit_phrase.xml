@@ -1,57 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:weightSum="100">
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="100">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/gradientcolor"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Phrases"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20pt" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="380dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-77dp"
+            android:background="@drawable/listview_border"
             android:choiceMode="singleChoice" />
-    </RelativeLayout>
 
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#F2F2F2"
-        android:hint="Enter Your Name Here"
-        android:padding="15dp"
-        android:textColorHint="#000"
-        android:textStyle="bold|italic" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#F2F2F2"
+            android:hint="Word Will Appear Here"
+            android:padding="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColorHint="#000"
+            android:textStyle="bold|italic" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/edit"
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="47dp"
-            android:text="@string/edit" />
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
 
-        <Button
-            android:id="@+id/save"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:text="@string/save" />
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:text="@string/edit"
+                android:background="@drawable/button_style"/>
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/save"
+                android:background="@drawable/button_style" />
+
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

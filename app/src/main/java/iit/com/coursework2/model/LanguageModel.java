@@ -5,7 +5,6 @@ public class LanguageModel {
     private String lang_code;
     private String lang_name;
     private Integer subscribed;
-    private boolean modified;
 
     public LanguageModel(String ID, String lang_code, String lang_name, Integer subscribed) {
         this.ID = ID;
@@ -20,13 +19,6 @@ public class LanguageModel {
         this.subscribed = subscribed;
     }
 
-    public LanguageModel(String ID, String lang_code, String lang_name, Integer subscribed, boolean modified) {
-        this.ID = ID;
-        this.lang_code = lang_code;
-        this.lang_name = lang_name;
-        this.subscribed = subscribed;
-        this.modified = modified;
-    }
 
     public String getID() {
         return ID;

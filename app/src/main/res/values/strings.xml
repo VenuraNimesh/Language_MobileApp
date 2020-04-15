@@ -3,8 +3,9 @@
     <string name="addPhrase">Add Phrase</string>
     <string name="displayPhrase">Display Phrase</string>
     <string name="editPhrase">Edit Phrase</string>
-    <string name="languageSub">Language Subscription</string>
+    <string name="languageSub">Subscription</string>
     <string name="translate">Translate</string>
+    <string name="dictionary">Dictionary</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
     <string name="translateAll">Translate All</string>

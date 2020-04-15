@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.watson.language_translator.v3.LanguageTranslator;
@@ -47,6 +48,9 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
             listData.add(data.getString(1));
         }
         Collections.sort(listData);
+        if(listData.size() == 0){
+            Toast.makeText(DisplayPhrasesActivity.this, "There is nothing to display", Toast.LENGTH_SHORT).show();
+        }
         ArrayAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
 
         listView.setAdapter(listAdapter);

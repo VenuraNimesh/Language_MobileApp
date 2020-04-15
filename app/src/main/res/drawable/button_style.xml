@@ -3,10 +3,11 @@
     <item>
         <shape>
             <gradient
-                android:startColor="@color/startColor"
-                android:endColor="@color/endColor"
+                android:startColor="@color/buttonStart"
+                android:endColor="@color/buttonEnd"
                 android:angle="270" />
+            <corners android:radius="10dp"/>
         </shape>
     </item>
-
 </selector>
+

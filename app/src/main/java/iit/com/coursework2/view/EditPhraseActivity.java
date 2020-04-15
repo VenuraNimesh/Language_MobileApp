@@ -73,15 +73,15 @@ public class EditPhraseActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> listAdapter, View view, int position, long itemId) {
-                CheckedTextView textView;
+                //CheckedTextView textView;
 
                 selectedValue = (String) listView.getItemAtPosition(position);
 
-                listView.invalidate();
-                textView = (CheckedTextView) view;
-                if (textView != null) {
-                    textView.setTextColor(Color.BLUE);
-                }
+//                listView.invalidate();
+//                textView = (CheckedTextView) view;
+//                if (textView != null) {
+//                    textView.setTextColor(Color.BLUE);
+//                }
             }
         });
     }
@@ -98,10 +98,6 @@ public class EditPhraseActivity extends AppCompatActivity {
                             phraseID = phraseObjArray.get(i).getID();
                         }
                     }
-//                    Cursor data = phraseController.getPhraseID(selectedValue);
-//                    while (data.moveToNext()) {
-//                        phraseID = data.getInt(0);
-//                    }
                 }
             }
         });

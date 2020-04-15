@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.HashMap;
 
 import iit.com.coursework2.model.DatabaseHelper;
+import iit.com.coursework2.model.DictionaryModel;
 import iit.com.coursework2.model.LanguageModel;
 
 public class LanguageController extends DatabaseHelper{
@@ -50,15 +51,6 @@ public class LanguageController extends DatabaseHelper{
         return data;
     }
 
-//    public boolean updateSubscription(String id){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(COLT4, 1);
-//
-//        db.update(TABLE_TRANSLATE, contentValues, "ID = ?", new String[] { id });
-//        return true;
-//    }
-
     public boolean updateSubscription(HashMap<String, Integer> subscribedHashMap){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -70,5 +62,32 @@ public class LanguageController extends DatabaseHelper{
         }
 
         return true;
+    }
+
+    public void translateAllPhrases(DictionaryModel dictionaryModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLD1, dictionaryModel.getLang_id());
+        contentValues.put(COLD2, dictionaryModel.getPhrase_id());
+        contentValues.put(COLD3, dictionaryModel.getPhrase_name());
+        contentValues.put(COLD4, dictionaryModel.getTranslated_phrase());
+        contentValues.put(COLD5, dictionaryModel.getLang_name());
+
+        db.insert(TABLE_DICTIONARY, null, contentValues);
+    }
+
+    public Cursor getAllTranslatedLanguages(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT DISTINCT " + COLD5 + " FROM " + TABLE_DICTIONARY;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getTranslatedPrases(String selectedLang){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + COLD3 + "," + COLD4 + " FROM " + TABLE_DICTIONARY + " WHERE " + COLD5 + " = '" + selectedLang + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
     }
 }

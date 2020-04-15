@@ -7,24 +7,41 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:weightSum="100"
-        >
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="320dp"
-            >
+            android:layout_height="200dp"
+            android:background="@drawable/gradientcolor"
+            android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/phrasesListView"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:choiceMode="singleChoice" />
-        </RelativeLayout>
+                android:layout_marginTop="17dp"
+                android:gravity="center">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/translate"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20pt" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/phrasesListView"
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-77dp"
+            android:choiceMode="singleChoice"
+            android:background="@drawable/listview_border" />
 
         <RelativeLayout
             android:layout_width="230dp"
@@ -54,43 +71,46 @@
                 android:src="@drawable/dropdown" />
         </RelativeLayout>
 
-
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp">
 
             <Button
                 android:id="@+id/translate"
                 android:layout_width="120dp"
-                android:layout_height="55dp"
-                android:text="@string/translate" />
+                android:layout_height="40dp"
+                android:text="@string/translate"
+                android:background="@drawable/button_style"/>
 
             <Button
                 android:id="@+id/translateAll"
                 android:layout_width="120dp"
-                android:layout_height="55dp"
-                android:text="@string/translateAll" />
-        </LinearLayout>
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/translateAll"
+                android:background="@drawable/button_style" />
 
+        </LinearLayout>
 
         <TextView
             android:id ="@+id/translatedWord"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Word Appear here"
+            android:visibility="invisible"
             android:textAlignment="center"
             android:textSize="15pt" />
 
-        <ImageButton
+        <ImageView
             android:id= "@+id/speakerButton"
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:scaleType="fitXY"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
             android:src="@drawable/speaker" />
-
     </LinearLayout>
 </ScrollView>
-
-    <!--android:prompt="Select LanguageModeluage"-->
+    <!--android:text="Word Appear here"-->

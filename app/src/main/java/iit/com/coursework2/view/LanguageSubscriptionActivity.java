@@ -1,6 +1,7 @@
 package iit.com.coursework2.view;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -80,7 +81,13 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
     }
 
     private class GetLanguages extends AsyncTask<String, Void, String> {
+        private ProgressDialog dialog = new ProgressDialog(LanguageSubscriptionActivity.this);
 
+        @Override
+        protected void onPreExecute(){
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
         @Override
         protected String doInBackground(String... strings) {
 
@@ -88,15 +95,29 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
             String languagesJson = String.valueOf(languages);
 
             if (languagesJson != null) {
-                addLanguagesToDB(languagesJson);
+                Boolean completed = addLanguagesToDB(languagesJson);
+                if(completed){
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            listViewWithCheckBoxes();
+                        }
+                    });
+
+                }
+
             } else {
                 Toast.makeText(LanguageSubscriptionActivity.this, "Something went wrong, Please Try Again", Toast.LENGTH_SHORT).show();
+            }
+            if(dialog.isShowing()){
+                dialog.dismiss();
             }
 
             return languagesJson;
         }
 
-        private void addLanguagesToDB(String allLanguagesJson) {
+        private Boolean addLanguagesToDB(String allLanguagesJson) {
 
             try {
                 JSONObject jsonObject = new JSONObject(allLanguagesJson);
@@ -114,9 +135,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                     languageController.addAllLanguages(language);
                 }
 
+
             } catch (final JSONException e) {
                 Toast.makeText(LanguageSubscriptionActivity.this, "Something went wrong, Please Try Again", Toast.LENGTH_SHORT).show();
             }
+            return true;
         }
 
     }
@@ -166,6 +189,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                 for (int i = 0; i < languageObjArray.size(); i++) {
                     if (languageObjArray.get(i).getLang_name().equals(selectedLanguage)) {
 
+                        //Changing subscription
                         if(item.isChecked()){
                             languageObjArray.get(i).setSubscribed(1);
                             subscribedHashMap.put(languageObjArray.get(i).getID(), 1);
@@ -190,7 +214,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                 if (subscribedHashMap != null) {
                  boolean updated =  languageController.updateSubscription(subscribedHashMap);
                  if(updated) {
-                     listViewWithCheckBoxes();
+                     //listViewWithCheckBoxes();
                      Toast.makeText(LanguageSubscriptionActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                  }
                  else
