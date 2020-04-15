@@ -11,13 +11,13 @@ import iit.com.coursework2.model.DatabaseHelper;
 import iit.com.coursework2.model.DictionaryModel;
 import iit.com.coursework2.model.LanguageModel;
 
-public class LanguageController extends DatabaseHelper{
+public class LanguageController extends DatabaseHelper {
 
     public LanguageController(Context context) {
         super(context);
     }
 
-    public void addAllLanguages(LanguageModel languageModel){
+    public void addAllLanguages(LanguageModel languageModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLT2, languageModel.getLang_code());
@@ -27,14 +27,15 @@ public class LanguageController extends DatabaseHelper{
         db.insert(TABLE_TRANSLATE, null, contentValues);
     }
 
-    public Cursor getAllLanguages(){
+    public Cursor getAllLanguages() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_TRANSLATE;
         Cursor data = db.rawQuery(query, null);
         return data;
     }
 
-    public Integer checkLanguageTable(){
+    //Checking whether table has filled or not
+    public Integer checkLanguageTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT COUNT(*) FROM " + TABLE_TRANSLATE;
         Cursor data = db.rawQuery(query, null);
@@ -44,21 +45,14 @@ public class LanguageController extends DatabaseHelper{
         return count;
     }
 
-    public Cursor getLanguageID(String language){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + COLT1 + " FROM " + TABLE_TRANSLATE + " WHERE " + COLT3 + " = '" + language + "'";
-        Cursor data = db.rawQuery(query, null);
-        return data;
-    }
-
-    public boolean updateSubscription(HashMap<String, Integer> subscribedHashMap){
+    public boolean updateSubscription(HashMap<String, Integer> subscribedHashMap) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        for(String i : subscribedHashMap.keySet()){
+        for (String i : subscribedHashMap.keySet()) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLT4, subscribedHashMap.get(i));
 
-            db.update(TABLE_TRANSLATE, contentValues, "ID = ?", new String[] {(i)});
+            db.update(TABLE_TRANSLATE, contentValues, "ID = ?", new String[]{(i)});
         }
 
         return true;
@@ -77,14 +71,15 @@ public class LanguageController extends DatabaseHelper{
         db.insert(TABLE_DICTIONARY, null, contentValues);
     }
 
-    public Cursor getAllTranslatedLanguages(){
+    //Get the languages added to the Dictionary
+    public Cursor getAllTranslatedLanguages() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT DISTINCT " + COLD5 + " FROM " + TABLE_DICTIONARY;
         Cursor data = db.rawQuery(query, null);
         return data;
     }
 
-    public Cursor getTranslatedPrases(String selectedLang){
+    public Cursor getTranslatedPrases(String selectedLang) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT " + COLD3 + "," + COLD4 + " FROM " + TABLE_DICTIONARY + " WHERE " + COLD5 + " = '" + selectedLang + "'";
         Cursor data = db.rawQuery(query, null);

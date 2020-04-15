@@ -40,6 +40,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="-77dp"
+            android:nestedScrollingEnabled="true"
             android:choiceMode="singleChoice"
             android:background="@drawable/listview_border" />
 

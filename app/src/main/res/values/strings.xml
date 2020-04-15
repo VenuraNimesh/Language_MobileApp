@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Coursework2</string>
+    <string name="app_name">Language Translator</string>
     <string name="addPhrase">Add Phrase</string>
     <string name="displayPhrase">Display Phrase</string>
     <string name="editPhrase">Edit Phrase</string>

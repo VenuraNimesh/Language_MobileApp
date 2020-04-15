@@ -42,13 +42,13 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         PhraseController phraseController = new PhraseController(this);
         Cursor data = phraseController.getData();
         ArrayList<String> listData = new ArrayList<>();
-        while(data.moveToNext()){
-            //get the value from database in col 1
+        while (data.moveToNext()) {
+            //Get the value from database in col 1
             //Add it to the list
             listData.add(data.getString(1));
         }
         Collections.sort(listData);
-        if(listData.size() == 0){
+        if (listData.size() == 0) {
             Toast.makeText(DisplayPhrasesActivity.this, "There is nothing to display", Toast.LENGTH_SHORT).show();
         }
         ArrayAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
@@ -57,5 +57,3 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
 
     }
 }
-
-    //boolean isTrue = cursor.getInt(columnNo) > 0;

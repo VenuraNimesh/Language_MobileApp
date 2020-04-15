@@ -10,28 +10,27 @@ import iit.com.coursework2.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_TIME_OUT=2000;
+    private static int SPLASH_SCREEN_TIME_OUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i=new Intent(SplashScreenActivity.this,
-                        MainActivity.class);
                 //Intent is used to switch from one activity to another.
+                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
 
+                //Invoke the SecondActivity.
                 startActivity(i);
-                //invoke the SecondActivity.
 
+                //The current activity will get finished.
                 finish();
-                //the current activity will get finished.
+
             }
         }, SPLASH_SCREEN_TIME_OUT);
     }

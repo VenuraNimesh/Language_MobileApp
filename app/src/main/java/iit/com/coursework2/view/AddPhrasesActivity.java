@@ -41,10 +41,9 @@ public class AddPhrasesActivity extends AppCompatActivity {
                 if (phrase.length() != 0) {
                     String newPhrase = phrase.substring(0, 1).toUpperCase() + phrase.substring(1);
 
-                    //if (editText.length() != 0) {
                     AddData(newPhrase);
                     editText.setText("");
-                    //}
+
                 } else {
                     toastMessage("Enter a word or a phrase");
                 }
@@ -55,6 +54,8 @@ public class AddPhrasesActivity extends AppCompatActivity {
 
     public void AddData(String newPhrase) {
         PhraseController phraseController = new PhraseController(this);
+
+        //Inserting phrases to the database
         boolean insertData = phraseController.addPhrases(newPhrase);
 
         if (insertData) {

@@ -39,7 +39,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
     ListView listViewLan;
     Button btnUpdate;
     LanguageController languageController = new LanguageController(this);
-    ArrayList<String> selectedLanguagesList = new ArrayList<>();
     ArrayList<LanguageModel> languageObjArray = new ArrayList<>();
     HashMap<String, Integer> subscribedHashMap = new HashMap<>();
 
@@ -54,7 +53,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
 
         //Check whether language table has data
         Integer dataCount = languageController.checkLanguageTable();
-        Log.d("counttttt", String.valueOf(dataCount));
+
         if (dataCount < 1) {
 
             //Check for internet connection
@@ -84,10 +83,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
         private ProgressDialog dialog = new ProgressDialog(LanguageSubscriptionActivity.this);
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             this.dialog.setMessage("Please Wait");
             this.dialog.show();
         }
+
         @Override
         protected String doInBackground(String... strings) {
 
@@ -96,7 +96,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
 
             if (languagesJson != null) {
                 Boolean completed = addLanguagesToDB(languagesJson);
-                if(completed){
+                if (completed) {
                     runOnUiThread(new Runnable() {
 
                         @Override
@@ -104,13 +104,12 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                             listViewWithCheckBoxes();
                         }
                     });
-
                 }
 
             } else {
                 Toast.makeText(LanguageSubscriptionActivity.this, "Something went wrong, Please Try Again", Toast.LENGTH_SHORT).show();
             }
-            if(dialog.isShowing()){
+            if (dialog.isShowing()) {
                 dialog.dismiss();
             }
 
@@ -132,6 +131,8 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                     Integer subscribed = 0;
 
                     LanguageModel language = new LanguageModel(code, name, subscribed);
+
+                    //Adding languages to the database
                     languageController.addAllLanguages(language);
                 }
 
@@ -165,15 +166,13 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
             }
         }
 
-        //Collections.sort(listLanguages);
-
-
         ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, listLanguages);
 
         listViewLan.setAdapter(arrayAdapter);
+
+        //Set the list view for the previously subscribed languages
         for (Integer position : checkedList) {
             listViewLan.setItemChecked(position - 1, true);
-
         }
 
         listViewLan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -182,26 +181,20 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                 CheckedTextView item = (CheckedTextView) view;
                 String selectedLanguage = (String) listViewLan.getItemAtPosition(position);
 
-//                if (selectedLanguagesList.contains(selectedLanguage)) {
-//                    selectedLanguagesList.remove(selectedLanguage);
-//                } else
-//                    selectedLanguagesList.add(selectedLanguage);
                 for (int i = 0; i < languageObjArray.size(); i++) {
                     if (languageObjArray.get(i).getLang_name().equals(selectedLanguage)) {
 
                         //Changing subscription
-                        if(item.isChecked()){
+                        if (item.isChecked()) {
                             languageObjArray.get(i).setSubscribed(1);
                             subscribedHashMap.put(languageObjArray.get(i).getID(), 1);
-                        }
-                        else {
+                        } else {
                             languageObjArray.get(i).setSubscribed(1);
                             subscribedHashMap.put(languageObjArray.get(i).getID(), 0);
                         }
 
                     }
                 }
-
             }
         });
 
@@ -212,24 +205,14 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (subscribedHashMap != null) {
-                 boolean updated =  languageController.updateSubscription(subscribedHashMap);
-                 if(updated) {
-                     //listViewWithCheckBoxes();
-                     Toast.makeText(LanguageSubscriptionActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                 }
-                 else
-                     Toast.makeText(LanguageSubscriptionActivity.this, "Something went wrong,Try again", Toast.LENGTH_SHORT).show();
+                    boolean updated = languageController.updateSubscription(subscribedHashMap);
 
-//                    for (String language : selectedLanguagesList) {
-//                        Cursor data = languageController.getLanguageID(language);
-//                        while (data.moveToNext()) {
-//                            String languageID = String.valueOf(data.getInt(0));
-//
-//                        }
-//                    }
+                    if (updated) {
+                        Toast.makeText(LanguageSubscriptionActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(LanguageSubscriptionActivity.this, "Something went wrong,Try again", Toast.LENGTH_SHORT).show();
 
-                }
-                else
+                } else
                     Toast.makeText(LanguageSubscriptionActivity.this, "Nothing to Update", Toast.LENGTH_SHORT).show();
             }
         });

@@ -1,6 +1,5 @@
 package iit.com.coursework2.view;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -65,7 +64,9 @@ public class EditPhraseActivity extends AppCompatActivity {
             //Add phrases to the list
             listData.add(phrase);
         }
+        //Rearrange alphabetically
         Collections.sort(listData);
+
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, listData);
 
         listView.setAdapter(arrayAdapter);
@@ -73,15 +74,13 @@ public class EditPhraseActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> listAdapter, View view, int position, long itemId) {
-                //CheckedTextView textView;
 
                 selectedValue = (String) listView.getItemAtPosition(position);
 
-//                listView.invalidate();
-//                textView = (CheckedTextView) view;
-//                if (textView != null) {
-//                    textView.setTextColor(Color.BLUE);
-//                }
+                if (!(editText.getText().toString().matches("")) && (selectedValue != null)) {
+                    editText.setText(selectedValue);
+                }
+
             }
         });
     }
@@ -93,8 +92,8 @@ public class EditPhraseActivity extends AppCompatActivity {
                 if (selectedValue != null) {
                     editText.setText(selectedValue);
 
-                    for(int i=0; i< phraseObjArray.size(); i++){
-                        if(phraseObjArray.get(i).getPhrase().equals(selectedValue)){
+                    for (int i = 0; i < phraseObjArray.size(); i++) {
+                        if (phraseObjArray.get(i).getPhrase().equals(selectedValue)) {
                             phraseID = phraseObjArray.get(i).getID();
                         }
                     }

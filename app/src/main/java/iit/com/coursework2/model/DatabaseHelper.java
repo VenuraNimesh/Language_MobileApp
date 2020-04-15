@@ -28,23 +28,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     protected static final String COLD5 = "lang_name";
 
 
-    public DatabaseHelper(Context context){
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String Create_Table_Phrases = "CREATE TABLE " + TABLE_PHRASE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2 + " TEXT)";
         String Create_Table_Translate = "CREATE TABLE " + TABLE_TRANSLATE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                                                                COLT2 + " TEXT," +
-                                                                                COLT3 + " TEXT," +
-                                                                                COLT4 + " INTEGER)";
+                COLT2 + " TEXT," +
+                COLT3 + " TEXT," +
+                COLT4 + " INTEGER)";
 
-        String Create_Table_Dictionary = "CREATE TABLE " + TABLE_DICTIONARY +  " ("+ COLD1 + " INTEGER NOT NULL REFERENCES language_translate(ID),"  +
-                COLD2 + " INTEGER NOT NULL REFERENCES language_phrases(ID),"  +
+        String Create_Table_Dictionary = "CREATE TABLE " + TABLE_DICTIONARY + " (" + COLD1 + " INTEGER NOT NULL REFERENCES language_translate(ID)," +
+                COLD2 + " INTEGER NOT NULL REFERENCES language_phrases(ID)," +
                 COLD3 + " TEXT," +
                 COLD4 + " TEXT," +
-                COLD5 + " TEXT, PRIMARY KEY ("+COLD1 + "," +COLD2 +"))";
+                COLD5 + " TEXT, PRIMARY KEY (" + COLD1 + "," + COLD2 + "))";
 
         db.execSQL(Create_Table_Phrases);
         db.execSQL(Create_Table_Translate);
@@ -53,8 +54,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_PHRASE);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_TRANSLATE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PHRASE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSLATE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DICTIONARY);
         onCreate(db);
     }
 

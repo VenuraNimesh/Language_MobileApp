@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.content.Context;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -17,8 +18,8 @@ import iit.com.coursework2.R;
 public class Custom_ListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<HashMap<String, String>> translatedMap;
-    public static final String FIRST_COLUMN="First";
-    public static final String SECOND_COLUMN="Second";
+    private static final String FIRST_COLUMN = "First";
+    private static final String SECOND_COLUMN = "Second";
 
     public Custom_ListAdapter(Context context, ArrayList<HashMap<String, String>> translatedMap) {
         super();
@@ -40,7 +41,8 @@ public class Custom_ListAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return 0;
     }
-    private class ViewHolder{
+
+    private class ViewHolder {
         TextView txtFirst;
         TextView txtSecond;
     }
@@ -50,9 +52,9 @@ public class Custom_ListAdapter extends BaseAdapter {
 
         ViewHolder holder;
 
-        LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if(view == null){
+        if (view == null) {
 
             view = inflater.inflate(R.layout.list_adapter_dictionary, null);
             holder = new ViewHolder();
@@ -61,7 +63,7 @@ public class Custom_ListAdapter extends BaseAdapter {
             holder.txtSecond = (TextView) view.findViewById(R.id.translateColumn);
 
             view.setTag(holder);
-        }else{
+        } else {
 
             holder = (ViewHolder) view.getTag();
         }

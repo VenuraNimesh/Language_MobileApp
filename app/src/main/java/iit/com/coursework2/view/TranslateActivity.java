@@ -2,6 +2,7 @@ package iit.com.coursework2.view;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -92,12 +93,8 @@ public class TranslateActivity extends AppCompatActivity {
         subscribedLanguages();
         onClickTranslate();
         onClickTranslateAll();
-        //Log.d("translatedWord", translatedWord.getText().toString());
-        if (!translatedWord.getText().toString().equals(" ")) {
-            onClickPronounce();
-        } else {
-            Toast.makeText(TranslateActivity.this, "Translate a word or phrase first", Toast.LENGTH_SHORT).show();
-        }
+        onClickPronounce();
+
     }
 
     private void displayPhrases() {
@@ -113,25 +110,18 @@ public class TranslateActivity extends AppCompatActivity {
             listData.add(phrase);
         }
         Collections.sort(listData);
-        ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, listData);
 
         phrasesListView.setAdapter(arrayAdapter);
 
         phrasesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arrayAdapter, View view, int position, long itemId) {
+                CheckedTextView checkedTextView = (CheckedTextView) view;
+                ColorStateList oldColor = checkedTextView.getTextColors();
 
+                //Get the selected word/phrase
                 selectedWord = (String) phrasesListView.getItemAtPosition(position);
-
-               // phrasesListView.getChildAt(position).setBackgroundColor(Color.TRANSPARENT);
-
-//                CheckedTextView checkedTextView;
-//                phrasesListView.invalidateViews();
-//                checkedTextView = (CheckedTextView) view;
-//                if (checkedTextView != null) {
-//                    checkedTextView.setTextColor(Color.BLUE);
-//                }
-
 
             }
         });
@@ -153,6 +143,7 @@ public class TranslateActivity extends AppCompatActivity {
             ArrayList<String> subLanguageList = new ArrayList<>();
             for (int i = 0; i < languageObjArray.size(); i++) {
                 if (languageObjArray.get(i).getSubscribed() == 1) {
+                    //Add the subscribed languages to the dropdown
                     subLanguageList.add(languageObjArray.get(i).getLang_name());
                 }
             }
@@ -321,7 +312,7 @@ public class TranslateActivity extends AppCompatActivity {
 
                 for (int i = 0; i < result.getTranslations().size(); i++) {
                     String translatedPhrase = result.getTranslations().get(i).getTranslation();
-                    Log.d("translatedPhrase", translatedPhrase);
+
                     translatedList.add(translatedPhrase);
                 }
 
@@ -342,6 +333,7 @@ public class TranslateActivity extends AppCompatActivity {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
+            Toast.makeText(TranslateActivity.this, "Saved to Dictionary", Toast.LENGTH_SHORT).show();
             translatedListToDB(resultList);
 
         }
@@ -359,6 +351,7 @@ public class TranslateActivity extends AppCompatActivity {
 
                 DictionaryModel dictionaryModel = new DictionaryModel(langID, phraseID, phraseName, translatedWord, langName);
 
+                //Add dictionary models to the database
                 languageController.translateAllPhrases(dictionaryModel);
             }
 
@@ -375,11 +368,12 @@ public class TranslateActivity extends AppCompatActivity {
                 if (checkInternetConnection()) {
                     textService = initTextToSpeechService();
 
-                    if (translatedWord.getText() != null) {
-                        new SynthesisTask().execute(String.valueOf(translatedWord.getText().toString()));
-                    } else {
+                    if (translatedWord.getText().toString().matches("")) {
                         btnSpeaker.setEnabled(false);
-                        Toast.makeText(TranslateActivity.this, "Please Translate Again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TranslateActivity.this, "Please Translate a Word First", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        new SynthesisTask().execute(String.valueOf(translatedWord.getText().toString()));
                     }
 
                 } else {
@@ -422,8 +416,10 @@ public class TranslateActivity extends AppCompatActivity {
                 }
             } catch (Resources.NotFoundException e) {
                 Log.d("errorr", e.getMessage());
+                Toast.makeText(TranslateActivity.this, "Internal Error Try Again", Toast.LENGTH_SHORT).show();
             } catch (ServiceResponseException e) {
                 Log.d("errorrr", e.getStatusCode() + e.getMessage());
+                Toast.makeText(TranslateActivity.this, "Internal Error Try Again", Toast.LENGTH_SHORT).show();
             }
             return "Done";
         }

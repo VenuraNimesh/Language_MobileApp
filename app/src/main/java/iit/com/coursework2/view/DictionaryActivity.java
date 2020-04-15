@@ -37,9 +37,10 @@ public class DictionaryActivity extends AppCompatActivity {
     private void translatedLanguages() {
         Cursor data = languageController.getAllTranslatedLanguages();
         ArrayList<String> translatedLanguages = new ArrayList<>();
-        while(data.moveToNext()){
+        while (data.moveToNext()) {
             String language = data.getString(0);
 
+            //Add the languages which are been added to the dictionary
             translatedLanguages.add(language);
         }
 
@@ -50,8 +51,8 @@ public class DictionaryActivity extends AppCompatActivity {
             dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    //Get the selected language from dropdown
                     String selectedLanguage = adapterView.getItemAtPosition(position).toString();
-                    Log.d("selectedLanguage",selectedLanguage);
 
                     translatedPhrasesView(selectedLanguage);
                 }
@@ -69,7 +70,7 @@ public class DictionaryActivity extends AppCompatActivity {
         translatedMap.clear();
         Cursor data = languageController.getTranslatedPrases(selectedLanguage);
 
-        while(data.moveToNext()){
+        while (data.moveToNext()) {
             String phrase = data.getString(0);
             String translatedPhrase = data.getString(1);
 

@@ -8,9 +8,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/translate"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/translate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.SplashScreenActivity">
@@ -26,7 +26,7 @@
         <activity android:name=".view.EditPhraseActivity" />
         <activity android:name=".view.LanguageSubscriptionActivity" />
         <activity android:name=".view.TranslateActivity" />
-        <activity android:name=".view.DictionaryActivity"></activity>
+        <activity android:name=".view.DictionaryActivity"/>
     </application>
 
 </manifest>
