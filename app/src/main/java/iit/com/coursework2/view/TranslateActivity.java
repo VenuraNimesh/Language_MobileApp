@@ -117,8 +117,6 @@ public class TranslateActivity extends AppCompatActivity {
         phrasesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arrayAdapter, View view, int position, long itemId) {
-                CheckedTextView checkedTextView = (CheckedTextView) view;
-                ColorStateList oldColor = checkedTextView.getTextColors();
 
                 //Get the selected word/phrase
                 selectedWord = (String) phrasesListView.getItemAtPosition(position);
@@ -359,7 +357,6 @@ public class TranslateActivity extends AppCompatActivity {
     }
 
     private void onClickPronounce() {
-
         btnSpeaker.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -369,7 +366,6 @@ public class TranslateActivity extends AppCompatActivity {
                     textService = initTextToSpeechService();
 
                     if (translatedWord.getText().toString().matches("")) {
-                        btnSpeaker.setEnabled(false);
                         Toast.makeText(TranslateActivity.this, "Please Translate a Word First", Toast.LENGTH_SHORT).show();
 
                     } else {
