@@ -219,3 +219,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
     }
 
 }
+
+//https://cloud.ibm.com/apidocs/language-translator/language-translator?code=java
+//Tutorial 6

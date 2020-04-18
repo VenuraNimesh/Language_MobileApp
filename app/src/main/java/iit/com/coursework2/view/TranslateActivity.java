@@ -154,6 +154,8 @@ public class TranslateActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                         String selectedLanguage = adapterView.getItemAtPosition(position).toString();
 
+                        translatedWord.setText("");
+
                         for (int i = 0; i < languageObjArray.size(); i++) {
                             if (languageObjArray.get(i).getLang_name().equals(selectedLanguage)) {
                                 selectedLangCode = languageObjArray.get(i).getLang_code();
@@ -278,7 +280,7 @@ public class TranslateActivity extends AppCompatActivity {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            if (result.equals("404")) {
+            if (result.equals("404") || result.equals("503")) {
                 Toast.makeText(TranslateActivity.this, "Selected Language is Currently Unavailable", Toast.LENGTH_SHORT).show();
             } else {
                 translatedWord.setVisibility(View.VISIBLE);
@@ -316,10 +318,9 @@ public class TranslateActivity extends AppCompatActivity {
 
             } catch (ServiceResponseException e) {
                 Log.d("errorrr", e.getStatusCode() + e.getMessage());
-                //return String.valueOf(e.getStatusCode());
+
             } catch (Resources.NotFoundException e) {
                 Log.d("errorr", e.getMessage());
-                //return String.valueOf(e);
             }
             return translatedList;
 
@@ -331,14 +332,20 @@ public class TranslateActivity extends AppCompatActivity {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            Toast.makeText(TranslateActivity.this, "Saved to Dictionary", Toast.LENGTH_SHORT).show();
-            translatedListToDB(resultList);
+            if (resultList.size() == 0) {
+                Toast.makeText(TranslateActivity.this, "Selected Language is Currently Unavailable", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(TranslateActivity.this, "Saved to Dictionary", Toast.LENGTH_SHORT).show();
+                translatedListToDB(resultList);
+            }
+
 
         }
     }
 
     private void translatedListToDB(ArrayList<String> translatedList) {
-        if (phraseObjArray.size() != 0 && selectedLangID != null) {
+        if (phraseObjArray.size() != 0 && selectedLangID != null && translatedList.size() != 0) {
             String langID = selectedLangID;
             String langName = selectedLangName;
 

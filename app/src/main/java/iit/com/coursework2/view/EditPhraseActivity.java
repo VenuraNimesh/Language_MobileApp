@@ -33,6 +33,7 @@ public class EditPhraseActivity extends AppCompatActivity {
     PhraseController phraseController = new PhraseController(this);
     ArrayList<PhraseModel> phraseObjArray = new ArrayList<>();
     ArrayAdapter arrayAdapter;
+    private boolean checkingEditOption = false;
 
 
     @Override
@@ -77,6 +78,12 @@ public class EditPhraseActivity extends AppCompatActivity {
 
                 selectedValue = (String) listView.getItemAtPosition(position);
 
+                for (int i = 0; i < phraseObjArray.size(); i++) {
+                    if (phraseObjArray.get(i).getPhrase().equals(selectedValue)) {
+                        phraseID = phraseObjArray.get(i).getID();
+                    }
+                }
+
                 if (!(editText.getText().toString().matches("")) && (selectedValue != null)) {
                     editText.setText(selectedValue);
                 }
@@ -91,12 +98,7 @@ public class EditPhraseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (selectedValue != null) {
                     editText.setText(selectedValue);
-
-                    for (int i = 0; i < phraseObjArray.size(); i++) {
-                        if (phraseObjArray.get(i).getPhrase().equals(selectedValue)) {
-                            phraseID = phraseObjArray.get(i).getID();
-                        }
-                    }
+                    checkingEditOption = true;
                 }
             }
         });
@@ -108,7 +110,7 @@ public class EditPhraseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String editPhrase = editText.getText().toString();
 
-                if (editPhrase.length() != 0) {
+                if (editPhrase.length() != 0 && checkingEditOption) {
                     String newPhrase = editPhrase.substring(0, 1).toUpperCase() + editPhrase.substring(1);
 
                     boolean isUpdated = phraseController.updateData(newPhrase, String.valueOf(phraseID));
@@ -121,8 +123,9 @@ public class EditPhraseActivity extends AppCompatActivity {
                     }
 
                     editText.setText("");
+                    checkingEditOption = false;
                 } else {
-                    Toast.makeText(EditPhraseActivity.this, "Cannot be blank", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPhraseActivity.this, "Cannot Save", Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -82,6 +82,8 @@ public class DictionaryActivity extends AppCompatActivity {
         }
 
         Custom_ListAdapter adapter = new Custom_ListAdapter(this, translatedMap);
+
         translatedListView.setAdapter(adapter);
+        Log.d("mapppp", String.valueOf(translatedListView));
     }
 }
