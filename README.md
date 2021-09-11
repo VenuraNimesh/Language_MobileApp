@@ -8,7 +8,10 @@ Language Translator is an android application to translate text conversations, s
 
 **App Screenshots**
 
-![Alt text](https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot3.jpeg?raw=true "Optional Title")
-![Alt text](https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot1.jpeg?raw=true "Optional Title")
-![Alt text](https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot2.jpeg?raw=true "Optional Title")
-![Alt text](https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot4.jpeg?raw=true "Optional Title")
+
+<img src="https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot5.jpeg" width="300" />  <img src="https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot3.jpeg" width="300" />
+<img src="https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot2.jpeg" width="300" />
+<img src="https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot6.jpeg" width="300" />
+<img src="https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot1.jpeg" width="300" />
+<img src="https://github.com/VenuraNimesh/Language_MobileApp/blob/master/app/src/main/res/drawable/Screenshot4.jpeg" width="300" />
+
